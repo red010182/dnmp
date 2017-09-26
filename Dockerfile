@@ -31,6 +31,15 @@ RUN docker-php-ext-install mysqli
 RUN apt-get install -y libxml2-dev
 RUN docker-php-ext-install soap
 
+# memcache
+RUN apt-get -y install libz-dev libmemcached-dev libmemcached11 libmemcachedutil2 build-essential \
+	&& pecl install memcached-2.2.0 \
+	&& echo extension=memcached.so >> /usr/local/etc/php/conf.d/memcached.ini \
+	&& apt-get remove -y build-essential libmemcached-dev libz-dev \
+	&& apt-get autoremove -y \
+	&& apt-get clean \
+	&& rm -rf /tmp/pear
+
 # General extensions that may had be installed default
 # If not, install them with following command
 #RUN docker-php-ext-install ctype
